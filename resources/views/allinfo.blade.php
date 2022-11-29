@@ -1,13 +1,15 @@
 @extends ('layout')
 @section('content')
- @foreach ($blocks as $block)
+@foreach ($blocks as $block)
 <article>
-    {{$block->title}}
+    <a href="/bio/info/{{$block->id}}" >
+        {{$block->title}}
+    </a>
     {{$block->created_at}}
 </article>
  <p>
  {!! $block->body !!}
  </p>
-     <hr>
+ <hr>
 @endforeach
 @endsection

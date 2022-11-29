@@ -1,9 +1,12 @@
 @extends('layout')
 @section('content')
-    {{$info->tittle}}
-    {{$info->created_at}}
-
-    {{$info->body}}
+    <article>
+        {{$info->title}}
+        {{$info->created_at}}
+    </article>
+    <p>
+        {{$info->body}}
+    </p>
 
     <a href="/bio/info">
         fuck go back
