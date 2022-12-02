@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MainController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\BasketController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,10 +17,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'App\Http\Controllers\HomeController@getHome');
+Route::get('/', [MainController::class, 'getMainPage'])->name('index');
 
-Route::get('/bio', 'App\Http\Controllers\BioController@getBio');
+Route::get('/categories', [CategoryController::class, 'getCategories'])->name('categories');
 
-Route::get('/bio/info', 'App\Http\Controllers\InfoController@getAll');
+Route::get('/basket', [BasketController::class, 'getBasket'])->name('basket');
 
-Route::get('/bio/info/{info}', 'App\Http\Controllers\InfoController@getRow');
+Route::get('/basket/place', [BasketController::class, 'getBasketPlace'])->name('basketPlace');
+
+Route::post('/basket/place', [BasketController::class, 'confirmPlace'])->name('confirmPlace');
+
+Route::post('/basket/add/{id}', [BasketController::class, 'addToBasket'])->name('addToBasket');
+
+Route::post('/basket/remove/{id}', [BasketController::class, 'removeFromBasket'])->name('removeFromBasket');
+
+Route::get('/{category}', [CategoryController::class, 'getCategory'])->name('category');
+
+Route::get('/{category}/{product?}', [ProductController::class, 'getProduct'])->name('product');
