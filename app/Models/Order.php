@@ -16,21 +16,19 @@ class Order extends Model
 
     public static function createOrder()
     {
-        return session(['orderId' => Order::create()->id]);
+        $item = Order::create()->id;
+        $key  = 'orderId';
+        Session::setToSession($key, $item);
+        return Session::getItem($key);
     }
 
     public static function isOrderIdExists(): bool
     {
-        if(is_null(Order::getOrderId())) {
+        if(is_null(Session::getItem('orderId'))) {
             return false;
         }
 
         return true;
-    }
-
-    public static function getOrderId()
-    {
-        return session('orderId');
     }
 
     public static function setIdToSession(int $orderId)

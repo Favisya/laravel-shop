@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Session;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BasketController extends Controller
 {
     public function getBasket()
     {
-        $orderId = Order::getOrderId();
+        $orderId = Session::getItem('orderId');
         if (!Order::isOrderIdExists()) {
             $orderId = Order::createOrder();
         }
@@ -19,7 +21,7 @@ class BasketController extends Controller
 
     public function getBasketPlace()
     {
-        $orderId = Order::getOrderId();
+        $orderId = Session::getItem('orderId');
         if (!Order::isOrderIdExists()) {
             return redirect()->route('basket');
         }
@@ -34,7 +36,7 @@ class BasketController extends Controller
 
     public function confirmPlace(Request $request)
     {
-        $orderId = Order::getOrderId();
+        $orderId = Session::getItem('orderId');
         if (!Order::isOrderIdExists()) {
             return redirect()->route('basket');
         }
@@ -46,9 +48,9 @@ class BasketController extends Controller
         );
 
         if ($order) {
-            session()->flash('success', "Заказ передан в обработку");
+            Session::setFlash('success', 'Заказ передан в обработку');
         } else {
-            session()->flash('warning', "Произошла ошибка");
+            Session::setFlash('warning', 'Произошла ошибка');
         }
 
         return redirect()->route('index');
@@ -56,7 +58,7 @@ class BasketController extends Controller
 
     public function addToBasket(int $productId)
     {
-        $orderId = Order::getOrderId();
+        $orderId = Session::getItem('orderId');
         if (!Order::isOrderIdExists()) {
             $orderId = Order::createOrder();
         }
@@ -76,13 +78,19 @@ class BasketController extends Controller
             $order->products()->attach($productId);
         }
 
-        session()->flash('success', "Товар под именем {$order->products->last()->name} спешно добавлен");
+        if (Auth::check()) {
+            $order->user_id = Auth::id();
+            $order->save();
+        }
+
+        $message = "Товар был успешно добавлен";
+        Session::setFlash('success', $message);
         return redirect()->route('basket');
     }
 
     public function removeFromBasket(int $productId)
     {
-        $orderId = Order::getOrderId();
+        $orderId = Session::getItem('orderId');
         if (is_null($orderId)) {
             return redirect()->route('basket');
         }
@@ -102,8 +110,8 @@ class BasketController extends Controller
                 $pivotRow->update();
             }
         }
-
-        session()->flash('warning', "Товар под именем {$order->products->last()->name} был удален");
+        $message = "Товар был удален";
+        Session::setFlash('warning', $message);
         return redirect()->route('basket');
     }
 }

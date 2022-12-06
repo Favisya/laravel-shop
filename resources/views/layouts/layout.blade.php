@@ -37,10 +37,26 @@
                 </li>
             </ul>
 
+            @guest()
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="">Войти</a></li>
-
+                <li><a href="{{route('register')}}">Зарегистрироваться</a></li>
             </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{{route('login')}}">Войти</a></li>
+            </ul>
+            @endguest
+
+            @auth()
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{{route('doLogout')}}">Выйти</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                <li><a href="{{route('home')}}">Панель администратора</a></li>
+                </ul>
+            @endauth
+
         </div>
     </div>
 </nav>

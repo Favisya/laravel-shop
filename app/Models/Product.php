@@ -5,9 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Product extends Model
+class Product extends AbstractItemModel
 {
     use HasFactory;
+
+    protected $fillable = [
+        'code',
+        'name',
+        'image',
+        'price',
+        'discription',
+        'category_id',
+    ];
 
     public function category()
     {
@@ -17,5 +26,10 @@ class Product extends Model
     public function getPriceForCount(): int
     {
         return $this->price * $this->pivot->count;
+    }
+
+    public function isImageExists(): bool
+    {
+        return $this->image === null;
     }
 }
