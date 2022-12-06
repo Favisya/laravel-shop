@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Product extends AbstractItemModel
+class Product extends Model
 {
     use HasFactory;
 
@@ -26,10 +26,5 @@ class Product extends AbstractItemModel
     public function getPriceForCount(): int
     {
         return $this->price * $this->pivot->count;
-    }
-
-    public function isImageExists(): bool
-    {
-        return $this->image === null;
     }
 }

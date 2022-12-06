@@ -28,6 +28,11 @@
                 <div class="input-group row">
                     <label for="code" class="col-sm-2 col-form-label">Код: </label>
                     <div class="col-sm-6">
+
+                        @error('code')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
+
                         <input type="text" class="form-control" name="code" id="code"
                                value="@isset($product){{ $product->code }}@endisset">
                     </div>
@@ -36,6 +41,11 @@
                 <div class="input-group row">
                     <label for="name" class="col-sm-2 col-form-label">Название: </label>
                     <div class="col-sm-6">
+
+                        @error('name')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
+
                         <input type="text" class="form-control" name="name" id="name"
                                value="@isset($product){{ $product->name }}@endisset">
                     </div>
@@ -44,6 +54,11 @@
                 <div class="input-group row">
                     <label for="category_id" class="col-sm-2 col-form-label">Категория: </label>
                     <div class="col-sm-6">
+
+                        @error('category_id')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
+
                         <select name="category_id" id="category_id" class="form-control">
                             @foreach($categories as $category)
                                 <option value="{{ $category->id }}"
