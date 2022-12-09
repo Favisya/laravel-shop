@@ -21,11 +21,26 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li ><a href="{{route('index')}}">Все товары</a></li>
-                <li ><a href="{{route('categories')}}">Категории</a></li>
-                <li ><a href="{{route('basket')}}">В корзину</a></li>
-                <li><a href="/reset">Сбросить проект в начальное состояние</a></li>
-                <li><a href="http://internet-shop.tmweb.ru/locale/en">en</a></li>
+                <li
+                    @routeactive('index')
+                >
+                    <a href="{{route('index')}}">Все товары</a>
+                </li>
+
+                <li
+                    @routeactive('categor*')
+                >
+                    <a href="{{route('categories')}}">Категории</a>
+                </li>
+
+                <li
+                    @routeactive('basket*')
+                >
+                    <a href="{{route('basket')}}">В корзину</a>
+                </li>
+
+                <li><a href="{{ route('reset') }}">Сбросить проект в начальное состояние</a></li>
+                <li><a href="">en</a></li>
 
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">₽<span class="caret"></span></a>
@@ -52,9 +67,15 @@
                     <li><a href="{{route('doLogout')}}">Выйти</a></li>
                 </ul>
 
+                @admin
                 <ul class="nav navbar-nav navbar-right">
                 <li><a href="{{route('home')}}">Панель администратора</a></li>
                 </ul>
+                @else
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{{route('person.orders')}}">Мои заказы</a></li>
+                </ul>
+                @endadmin
             @endauth
 
         </div>

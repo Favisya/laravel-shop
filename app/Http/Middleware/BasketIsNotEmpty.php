@@ -25,6 +25,7 @@ class BasketIsNotEmpty
                 return redirect()->route('index');
             }
         }
+
         return $next($request);
     }
 }

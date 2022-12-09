@@ -1,9 +1,11 @@
 <?php
 
-use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Person\OrderController as PersonOrderController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\CategoryController as UserCategoryController;
+use App\Http\Controllers\ResetController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BasketController;
 use App\Http\Controllers\MainController;
@@ -27,16 +29,29 @@ Auth::routes([
     'confirm' => false
 ]);
 
-Route::group([
-    'middleware' => 'auth',
-    'prefix'     => 'admin',
-], function () {
-    Route::group(['middleware' => 'is_admin'], function () {
-        Route::get('/orders', [OrderController::class, 'index'])->name('home');
+Route::get('reset', [ResetController::class, 'resetProject'])->name('reset');
+
+Route::middleware(['auth'])->group(function () {
+    Route::group([
+        'prefix' => 'person',
+    ], function () {
+        Route::get('/orders', [PersonOrderController::class, 'index'])->name('person.orders');
+        Route::get('/orders/{order}', [PersonOrderController::class, 'show'])->name('person.order');
     });
-    Route::resource('categories', AdminCategoryController::class);
-    Route::resource('products', AdminProductController::class);
+
+    Route::group([
+        'middleware' => 'auth',
+        'prefix'     => 'admin',
+    ], function () {
+        Route::group(['middleware' => 'is_admin'], function () {
+            Route::get('/orders', [AdminOrderController::class, 'index'])->name('home');
+            Route::get('/orders/{order}', [AdminOrderController::class, 'show'])->  name('order.show');
+            Route::resource('categories', AdminCategoryController::class);
+            Route::resource('products', AdminProductController::class);
+        });
+    });
 });
+
 
 Route::group(['prefix' => 'basket'], function () {
     Route::post('/add/{id}', [BasketController::class, 'addToBasket'])->name('addToBasket');

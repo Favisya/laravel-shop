@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    use HasFactory;
 
     public function products()
     {
@@ -29,11 +28,6 @@ class Order extends Model
         }
 
         return true;
-    }
-
-    public static function setIdToSession(int $orderId)
-    {
-        session(['orderId' => $orderId]);
     }
 
     public function saveOrder(string $name, string $phone, string $email)

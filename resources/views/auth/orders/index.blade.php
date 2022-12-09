@@ -8,24 +8,12 @@
         <table class="table">
             <tbody>
             <tr>
-                <th>
-                    #
-                </th>
-                <th>
-                    Имя
-                </th>
-                <th>
-                    Телефон
-                </th>
-                <th>
-                    Когда отправлен
-                </th>
-                <th>
-                    Сумма
-                </th>
-                <th>
-                    Действия
-                </th>
+                <th>#</th>
+                <th>Имя</th>
+                <th>Телефон</th>
+                <th>Когда отправлен</th>
+                <th>Сумма</th>
+                <th>Действия</th>
             </tr>
             @foreach($orders as $order)
                 <tr>
@@ -39,9 +27,14 @@
                             <a
                                 class="btn btn-success"
                                 type="button"
-                                href=""
-
-                            >Открыть</a>
+                                @if(Auth::user()->isAdmin())
+                                href="{{ route('order.show', $order) }}"
+                                @else
+                                href="{{ route('person.order', $order) }}"
+                                @endif
+                            >
+                                Открыть
+                            </a>
                         </div>
                     </td>
                 </tr>
