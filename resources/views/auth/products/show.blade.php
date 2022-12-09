@@ -43,6 +43,22 @@
                 <td>Цена</td>
                 <td>{{ $product->price }}</td>
             </tr>
+            <tr>
+                <td>Лэйблы</td>
+                <td>
+                    @if($product->isNew())
+                        <span class="badge badge-success">Новинка</span>
+                    @endif
+
+                    @if($product->isRecommend())
+                        <span class="badge badge-warning">Рекомендуемое</span>
+                    @endif
+
+                    @if($product->isHit())
+                        <span class="badge badge-danger">Хит продаж</span>
+                    @endif
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>

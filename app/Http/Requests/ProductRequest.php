@@ -31,8 +31,8 @@ class ProductRequest extends FormRequest
             'category_id' => 'required',
         ];
 
-        if ($this->route()->named('products.store')) {
-            $rules['code'] .= ',' . $this->route()->parameter('products')->id;;
+        if ($this->route()->named('products.update')) {
+            $rules['code'] .= ',' . $this->route()->parameter('product')->id;;
         }
 
         return $rules;

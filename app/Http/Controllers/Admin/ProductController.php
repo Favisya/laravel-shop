@@ -29,7 +29,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('auth.products.form');
+        $categories = Category::get();
+        return view('auth.products.form', compact('categories'));
     }
 
     /**
@@ -40,9 +41,14 @@ class ProductController extends Controller
      */
     public function store(ProductRequest $request)
     {
-        $path = $request->file('image')->store('products');
         $params = $request->all();
-        $params['image'] = $path;
+        if ($request->has('image')) {
+            $path = $request->file('image')->store('products');
+            $params['image'] = $path;
+        }
+
+        $params = $this->convertCheckBoxes($params);
+
         Product::create($params);
         return redirect()->route('products.index');
     }
@@ -86,6 +92,8 @@ class ProductController extends Controller
             $params['image'] = $path;
         }
 
+        $params = $this->convertCheckBoxes($params);
+
         $product->update($params);
         return redirect()->route('products.show', compact('product'));
     }
@@ -100,5 +108,18 @@ class ProductController extends Controller
     {
         $product->delete();
         return redirect()->route('products.index');
+    }
+
+
+    private function convertCheckBoxes(array $params): array
+    {
+        $fields = ['new', 'hit', 'recommend'];
+        foreach ($fields as $field) {
+            if (!isset($params[$field])) {
+                $params[$field] = 0;
+            }
+        }
+
+        return $params;
     }
 }
