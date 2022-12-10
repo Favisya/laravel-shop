@@ -47,6 +47,5 @@ class ProductRequest extends FormRequest
             'unique'   => 'Поле обязательно должно быть оригинальным',
             'required' => 'Поле обязательно для ввода',
         ];
-
     }
 }

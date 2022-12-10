@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProductsFilterRequest;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Barryvdh\Debugbar\Facades\Debugbar;
 
 class MainController extends Controller
 {
@@ -21,7 +22,7 @@ class MainController extends Controller
 
     private function filterProducts(Request $request)
     {
-        $productsQuery = Product::query();
+        $productsQuery = Product::with('category');
 
         if ($request->filled('priceFrom')) {
             $productsQuery->where('price', '>=', $request->priceFrom);
