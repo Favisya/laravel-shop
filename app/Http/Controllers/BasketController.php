@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Product;
 use App\Models\Session;
+use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,11 +14,13 @@ class BasketController extends Controller
     public function getBasket()
     {
         $orderId = Session::getItem('orderId');
-        if (!Order::isOrderIdExists()) {
-            $orderId = Order::createOrder();
+        if (Order::isOrderIdExists()) {
+            $order = Order::find($orderId);
+            return view('basket', compact('order'));
         }
-        $order = Order::find($orderId);
-        return view('basket', compact('order'));
+
+        Session::setFlash('warning', 'Корзина Пуста');
+        return redirect()->route('index');
     }
 
     public function getBasketPlace()
@@ -83,6 +87,8 @@ class BasketController extends Controller
             $order->save();
         }
 
+        Order::changeFullPrice(Product::findOrFail($productId)->price);
+
         $message = "Товар был успешно добавлен";
         Session::setFlash('success', $message);
         return redirect()->route('basket');
@@ -110,6 +116,10 @@ class BasketController extends Controller
                 $pivotRow->update();
             }
         }
+
+        Order::changeFullPrice(-1*(Product::findOrFail($productId)->price));
+        Debugbar::info(Order::getFullPrice());
+
         $message = "Товар был удален";
         Session::setFlash('warning', $message);
         return redirect()->route('basket');

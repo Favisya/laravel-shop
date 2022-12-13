@@ -34,7 +34,7 @@ class MainController extends Controller
 
         foreach ($this->labels as $label) {
             if ($request->has($label)) {
-                $productsQuery->where($label, 1);
+                $productsQuery->$label();
             }
         }
 

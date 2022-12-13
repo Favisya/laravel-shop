@@ -9,8 +9,9 @@
                 <th>#</th>
                 <th>Код</th>
                 <th>Название</th>
+                <th>Цена</th>
+                <th>Кол-во</th>
                 <th>Категория</th>
-                <th>Кол-во товарных предложений</th>
                 <th>Действия</th>
             </tr>
             @foreach($products as $product)
@@ -18,6 +19,8 @@
                     <td>{{ $product->id}}</td>
                     <td>{{ $product->code }}</td>
                     <td>{{ $product->name }}</td>
+                    <td>{{ $product->price }}</td>
+                    <td>{{ $product->count }}</td>
                     <td>{{ $product->category->name }}</td>
                     <td></td>
                     <td>

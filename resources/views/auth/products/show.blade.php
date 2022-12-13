@@ -44,6 +44,10 @@
                 <td>{{ $product->price }}</td>
             </tr>
             <tr>
+                <td>Количество товара</td>
+                <td>{{ $product->count }}</td>
+            </tr>
+            <tr>
                 <td>Лэйблы</td>
                 <td>
                     @if($product->isNew())

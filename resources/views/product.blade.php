@@ -8,7 +8,11 @@
     <p>{{$product->description}}</p>
 
     <form action="{{route('addToBasket', $product)}}" method="POST">
-        <button type="submit" class="btn btn-success" role="button">Добавить в корзину</button>
+        @if($product->isAvailable())
+            <button type="submit" class="btn btn-success" role="button">Добавить в корзину</button>
+        @else
+            в данный момент не доступен
+        @endif
         @csrf
     </form>
 @endsection

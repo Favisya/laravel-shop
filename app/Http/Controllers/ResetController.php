@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Storage;
 
 class ResetController extends Controller

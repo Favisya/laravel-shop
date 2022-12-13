@@ -27,6 +27,7 @@ class ProductRequest extends FormRequest
             'code'        => 'required|min:3|max:255|unique:products,code',
             'name'        => 'required|min:3|max:255',
             'price'       => 'required|numeric|min:1',
+            'count'       => 'required|numeric|min:0',
             'description' => 'required|min:5|max:255',
             'category_id' => 'required',
         ];
@@ -44,6 +45,7 @@ class ProductRequest extends FormRequest
             'min'      => 'Поле должно содержать минимум :min символов',
             'max'      => 'Поле должно содержать максимум :max символов',
             'price'    => 'Поле должео быть числом и не равняться нулю',
+            'count'    => 'Поле должео быть числом и быть не меньше нуля',
             'unique'   => 'Поле обязательно должно быть оригинальным',
             'required' => 'Поле обязательно для ввода',
         ];

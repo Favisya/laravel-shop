@@ -13,6 +13,11 @@ class Order extends Model
         return $this->belongsToMany(Product::class)->withPivot('count')->withTimestamps();
     }
 
+    public function scopeActive($query)
+    {
+        return $query->where('status', 1);
+    }
+
     public static function createOrder()
     {
         $item = Order::create()->id;
@@ -49,5 +54,21 @@ class Order extends Model
         }
 
         return $price;
+    }
+
+    public static function getFullPrice()
+    {
+        return Session::getItem('fullOrderSum', 0);
+    }
+
+    public static function changeFullPrice($productPrice): void
+    {
+        $sum = self::getFullPrice() + $productPrice;
+        Session::setToSession('fullOrderSum', $sum);
+    }
+
+    public static function clearPrice()
+    {
+        Session::deleteItem('fullOrderSum');
     }
 }

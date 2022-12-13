@@ -17,8 +17,7 @@ class CategoryController extends Controller
     public function getCategory($code)
     {
         $category = Category::where('code', $code)->first();
-        $products = Product::where('category_id', $category->id)->get();
-        return view('category', compact('category', 'products')
+        return view('category', compact('category')
         );
     }
 }

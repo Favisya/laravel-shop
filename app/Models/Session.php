@@ -21,4 +21,9 @@ class Session extends Model
     {
         session([$key => $item]);
     }
+
+    public static function deleteItem(string $key)
+    {
+        session()->forget($key);
+    }
 }
