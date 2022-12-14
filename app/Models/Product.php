@@ -10,6 +10,7 @@ class Product extends Model
     use SoftDeletes;
 
     protected $fillable = [
+        'id',
         'code',
         'name',
         'image',

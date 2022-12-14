@@ -2,53 +2,37 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Order;
+use App\Classes\Basket;
 use App\Models\Product;
 use App\Models\Session;
-use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class BasketController extends Controller
 {
     public function getBasket()
     {
-        $orderId = Session::getItem('orderId');
-        if (Order::isOrderIdExists()) {
-            $order = Order::find($orderId);
-            return view('basket', compact('order'));
-        }
-
-        Session::setFlash('warning', 'Корзина Пуста');
-        return redirect()->route('index');
+        $order = (new Basket())->getOrder();
+        return view('basket', compact('order'));
     }
 
     public function getBasketPlace()
     {
-        $orderId = Session::getItem('orderId');
-        if (!Order::isOrderIdExists()) {
-            return redirect()->route('basket');
-        }
-        $order = Order::Find($orderId);
+        $basket = new Basket();
+        $order = $basket->getOrder();
 
-        if ($order->calculatePrice() > 0) {
-            return view('order', compact('order'));
-        } else {
+        if (!$basket->countAvailable()) {
+            Session::setFlash('warning', 'Товар не доступен');
             return redirect()->route('basket');
         }
+        return view('order', compact('order'));
     }
 
     public function confirmPlace(Request $request)
     {
-        $orderId = Session::getItem('orderId');
-        if (!Order::isOrderIdExists()) {
-            return redirect()->route('basket');
-        }
-        $order = Order::Find($orderId);
-        $order->saveOrder(
+        $order = (new Basket())->saveOrder(
             $request->name,
             $request->phone,
-            $request->email
+            $request->email,
         );
 
         if ($order) {
@@ -60,68 +44,25 @@ class BasketController extends Controller
         return redirect()->route('index');
     }
 
-    public function addToBasket(int $productId)
+    public function addToBasket(Product $product)
     {
-        $orderId = Session::getItem('orderId');
-        if (!Order::isOrderIdExists()) {
-            $orderId = Order::createOrder();
-        }
+        $result = (new Basket(true))->addProduct($product);
 
-        $order = Order::find($orderId);
-
-        if ($order->products->contains($productId)) {
-            $pivotRow = $order
-                ->products()
-                ->where('product_id', $productId)
-                ->first()
-                ->pivot;
-
-            $pivotRow->count++;
-            $pivotRow->update();
+        if (!$result) {
+            Session::setFlash('warning', "Товар $product->name не доступен");
         } else {
-            $order->products()->attach($productId);
+            Session::setFlash('success', 'Товар был успешно добавлен');
         }
 
-        if (Auth::check()) {
-            $order->user_id = Auth::id();
-            $order->save();
-        }
-
-        Order::changeFullPrice(Product::findOrFail($productId)->price);
-
-        $message = "Товар был успешно добавлен";
-        Session::setFlash('success', $message);
         return redirect()->route('basket');
     }
 
-    public function removeFromBasket(int $productId)
+    public function removeFromBasket(Product $product)
     {
-        $orderId = Session::getItem('orderId');
-        if (is_null($orderId)) {
-            return redirect()->route('basket');
-        }
+        (new Basket())->removeProduct($product);
 
-        $order = Order::find($orderId);
+        Session::setFlash('warning', "Товар был удален");
 
-        if ($order->products->contains($productId)) {
-            $pivotRow = $order
-                ->products()
-                ->where('product_id', $productId)
-                ->first()
-                ->pivot;
-            if ($pivotRow->count <= 1) {
-                $order->products()->detach($productId);
-            } else {
-                $pivotRow->count--;
-                $pivotRow->update();
-            }
-        }
-
-        Order::changeFullPrice(-1*(Product::findOrFail($productId)->price));
-        Debugbar::info(Order::getFullPrice());
-
-        $message = "Товар был удален";
-        Session::setFlash('warning', $message);
         return redirect()->route('basket');
     }
 }

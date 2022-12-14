@@ -54,13 +54,13 @@ Route::middleware(['auth'])->group(function () {
 
 
 Route::group(['prefix' => 'basket'], function () {
-    Route::post('/add/{id}', [BasketController::class, 'addToBasket'])->name('addToBasket');
+    Route::post('/add/{product}', [BasketController::class, 'addToBasket'])->name('addToBasket');
 
     Route::group(['middleware' => 'is_basket_empty',], function () {
         Route::get('/', [BasketController::class, 'getBasket'])->name('basket');
         Route::get('/place', [BasketController::class, 'getBasketPlace'])->name('basketPlace');
         Route::post('/place', [BasketController::class, 'confirmPlace'])->name('confirmPlace');
-        Route::post('/remove/{id}', [BasketController::class, 'removeFromBasket'])->name('removeFromBasket');
+        Route::post('/remove/{product}', [BasketController::class, 'removeFromBasket'])->name('removeFromBasket');
     });
 });
 
@@ -72,4 +72,4 @@ Route::get('/categories', [UserCategoryController::class, 'getCategories'])->nam
 
 Route::get('/{category}', [UserCategoryController::class, 'getCategory'])->name('category');
 
-Route::get('/{category}/{product?}', [ProductController::class, 'getProduct'])->name('product');
+Route::get('/{category}/{product}', [ProductController::class, 'getProduct'])->name('product');

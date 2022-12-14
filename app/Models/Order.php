@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
+    protected $fillable = ['user_id'];
 
     public function products()
     {
@@ -18,9 +19,9 @@ class Order extends Model
         return $query->where('status', 1);
     }
 
-    public static function createOrder()
+    public static function createOrder(array $data = null)
     {
-        $item = Order::create()->id;
+        $item = Order::create($data)->id;
         $key  = 'orderId';
         Session::setToSession($key, $item);
         return Session::getItem($key);
@@ -43,7 +44,9 @@ class Order extends Model
         $this->email  = $email;
         $this->save();
 
-        session()->forget('orderId');
+        Session::deleteItem('orderId');
+
+        return $this;
     }
 
     public function calculatePrice(): int

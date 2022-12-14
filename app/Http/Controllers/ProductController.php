@@ -11,7 +11,6 @@ class ProductController extends Controller
     public function getProduct($category, $productCode = null)
     {
         $product = Product::withTrashed()->byCode($productCode);
-        Debugbar::info($product);
         return view('product', ['product' => $product]);
     }
 }
