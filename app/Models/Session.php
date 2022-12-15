@@ -26,4 +26,9 @@ class Session extends Model
     {
         session()->forget($key);
     }
+
+    public static function isInclude(string $key)
+    {
+        return session()->has($key);
+    }
 }

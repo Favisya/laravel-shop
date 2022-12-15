@@ -40,7 +40,7 @@ class Product extends Model
 
     public function scopeByCode($query, $code)
     {
-        return $query->where('code', $code)->first();
+        return $query->where('code', $code);
     }
 
     public function category()

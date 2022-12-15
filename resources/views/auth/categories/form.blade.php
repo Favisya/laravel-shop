@@ -38,7 +38,7 @@
                 <div class="input-group row">
                     <label for="name" class="col-sm-2 col-form-label">Название: </label>
                     <div class="col-sm-6">
-                        @include('auth.layouts.error', ['field' => 'name'])
+                            @include('auth.layouts.error', ['field' => 'name'])
                         <input type="text" class="form-control" name="name" id="name"
                                value="@isset($category){{ $category->name }}@endisset">
                     </div>

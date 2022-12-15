@@ -7,12 +7,23 @@
     <img src="{{ Storage::url($product->image) }}">
     <p>{{$product->description}}</p>
 
-    <form action="{{route('addToBasket', $product)}}" method="POST">
+
         @if($product->isAvailable())
-            <button type="submit" class="btn btn-success" role="button">Добавить в корзину</button>
+            <form action="{{route('addToBasket', $product)}}" method="POST">
+                <button type="submit" class="btn btn-success" role="button">Добавить в корзину</button>
+                @csrf
+            </form>
         @else
-            в данный момент не доступен
+            <span>в данный момент не доступен</span>
+            <br>
+            @include('auth.layouts.error', ['field' => 'email'])
+            <form  method="POST" action="{{ route('subscription', $product) }}" >
+                <input type="text" name="email">
+                <button type="submit">
+                    Подписаться на товар
+                </button>
+                @csrf
+            </form>
         @endif
-        @csrf
-    </form>
+
 @endsection

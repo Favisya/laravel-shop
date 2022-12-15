@@ -52,6 +52,7 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
+Route::post('/subscription/{product}', [ProductController::class, 'subscribeToProduct'])->name('subscription');
 
 Route::group(['prefix' => 'basket'], function () {
     Route::post('/add/{product}', [BasketController::class, 'addToBasket'])->name('addToBasket');
