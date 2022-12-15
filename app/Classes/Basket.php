@@ -2,11 +2,13 @@
 
 namespace App\Classes;
 
+use App\Mail\OrderCreated;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Session;
 use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class Basket
 {
@@ -18,7 +20,7 @@ class Basket
         if (is_null($orderId) && $createOrder) {
             $data = [];
             if (Auth::check()) {
-                $data['user_id'] = Auth::id();
+                $data['userId'] = Auth::id();
             }
 
             $this->order = Order::findOrFail(Order::createOrder($data));
@@ -42,7 +44,13 @@ class Basket
 
     public function saveOrder($name, $phone, $email)
     {
+        if (!$this->countAvailable(true)) {
+            return false;
+        }
+        Mail::to($email)->send(new OrderCreated($name, $this->order));
+
         return $this->order->saveOrder($name, $phone, $email);
+
     }
 
     public function addProduct(Product $product)
@@ -69,7 +77,9 @@ class Basket
             $pivotRow = $this->getPivotRow($product);
             if ($pivotRow->count <= 1) {
                 $this->order->products()->detach($product);
-                Session::deleteItem('orderId');
+                if ($this->order->products->count() < 2) {
+                    Session::deleteItem('orderId');
+                }
             } else {
                 $pivotRow->count--;
                 $pivotRow->update();
@@ -80,12 +90,20 @@ class Basket
         Debugbar::info(Order::getFullPrice());
     }
 
-    public function countAvailable(): bool
+    public function countAvailable($isUpdate = false): bool
     {
         foreach ($this->order->products as $product)
         {
             if ($product->count < $this->getPivotRow($product)->count) {
                 return false;
+            }
+
+            if ($isUpdate) {
+                $product->count -= $this->getPivotRow($product)->count;
+            }
+
+            if ($isUpdate) {
+                $this->order->products->map->save();
             }
         }
         return true;

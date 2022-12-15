@@ -10,7 +10,7 @@ class ProductController extends Controller
 {
     public function getProduct($category, $productCode = null)
     {
-        $product = Product::withTrashed()->byCode($productCode);
+        $product = Product::withTrashed()->byCode($productCode)->firstOrFail();
         return view('product', ['product' => $product]);
     }
 }
