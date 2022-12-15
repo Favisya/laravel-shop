@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SubscriptionRequest;
 use App\Models\Product;
 use App\Models\Subscription;
-use Barryvdh\Debugbar\Facades\Debugbar;
-use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {

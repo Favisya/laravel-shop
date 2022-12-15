@@ -17,63 +17,58 @@
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="{{route('index')}}">Интернет Магазин</a>
+            <a class="navbar-brand" href="{{route('index')}}">@lang('main.onlineShop')</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li
                     @routeactive('index')
                 >
-                    <a href="{{route('index')}}">Все товары</a>
+                    <a href="{{route('index')}}">@lang('main.allProducts')</a>
                 </li>
 
                 <li
                     @routeactive('categor*')
                 >
-                    <a href="{{route('categories')}}">Категории</a>
+                    <a href="{{route('categories')}}">@lang('main.categories')</a>
                 </li>
 
                 <li
                     @routeactive('basket*')
                 >
-                    <a href="{{route('basket')}}">В корзину</a>
+                    <a href="{{route('basket')}}">@lang('main.toCart')</a>
                 </li>
-
-                <li><a href="{{ route('reset') }}">Сбросить проект в начальное состояние</a></li>
-                <li><a href="">en</a></li>
+                <li><a href="{{ route('reset') }}">@lang('main.resetProject')</a></li>
+                <li><a href="{{ route('locale', __('main.setLang')) }}">@lang('main.setLang')</a></li>
 
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">₽<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="http://internet-shop.tmweb.ru/currency/RUB">₽</a></li>
-                        <li><a href="http://internet-shop.tmweb.ru/currency/USD">$</a></li>
-                        <li><a href="http://internet-shop.tmweb.ru/currency/EUR">€</a></li>
+                        <li><a href="">₽</a></li>
+                        <li><a href="">$</a></li>
+                        <li><a href="">€</a></li>
                     </ul>
                 </li>
             </ul>
 
             @guest()
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="{{route('register')}}">Зарегистрироваться</a></li>
-            </ul>
-
-            <ul class="nav navbar-nav navbar-right">
-                    <li><a href="{{route('login')}}">Войти</a></li>
+                    <li><a href="{{route('login')}}">@lang('main.login')</a></li>
             </ul>
             @endguest
 
             @auth()
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="{{route('doLogout')}}">Выйти</a></li>
+                    <li><a href="{{route('doLogout')}}">@lang('main.logout')</a></li>
                 </ul>
 
                 @admin
                 <ul class="nav navbar-nav navbar-right">
-                <li><a href="{{route('home')}}">Панель администратора</a></li>
+                <li><a href="{{route('home')}}">@lang('main.adminPanel')</a></li>
                 </ul>
                 @else
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="{{route('person.orders')}}">Мои заказы</a></li>
+                    <li><a href="{{route('person.orders')}}">@lang('main.myOrders')</a></li>
                 </ul>
                 @endadmin
             @endauth

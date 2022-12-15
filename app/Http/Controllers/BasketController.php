@@ -21,7 +21,7 @@ class BasketController extends Controller
         $order = $basket->getOrder();
 
         if (!$basket->countAvailable()) {
-            Session::setFlash('warning', 'Товар не доступен');
+            Session::setFlash('warning', __('basket.notAvailableMore'));
             return redirect()->route('basket');
         }
         return view('order', compact('order'));
@@ -36,9 +36,9 @@ class BasketController extends Controller
         );
 
         if ($order) {
-            Session::setFlash('success', 'Заказ передан в обработку');
+            Session::setFlash('success', __('basket.youOrderConfirmed'));
         } else {
-            Session::setFlash('warning', 'Произошла ошибка');
+            Session::setFlash('warning', __('basket.youCantOrderMore'));
         }
 
         return redirect()->route('index');
@@ -49,9 +49,9 @@ class BasketController extends Controller
         $result = (new Basket(true))->addProduct($product);
 
         if (!$result) {
-            Session::setFlash('warning', "Товар $product->name не доступен");
+            Session::setFlash('warning', __('basket.youCantOrderMore'));
         } else {
-            Session::setFlash('success', 'Товар был успешно добавлен');
+            Session::setFlash('success', __('basket.added'));
         }
 
         return redirect()->route('basket');
@@ -61,7 +61,7 @@ class BasketController extends Controller
     {
         (new Basket())->removeProduct($product);
 
-        Session::setFlash('warning', "Товар был удален");
+        Session::setFlash('warning', __('basket.added'));
 
         return redirect()->route('basket');
     }

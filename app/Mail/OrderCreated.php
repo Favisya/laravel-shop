@@ -51,8 +51,8 @@ class OrderCreated extends Mailable
         return new Content(
             view: 'mail.orderCreated',
             with: [
-                'name'    => $this->name,
-                'order'   => $this->order,
+                'name'  => $this->name,
+                'order' => $this->order,
             ],
         );
     }

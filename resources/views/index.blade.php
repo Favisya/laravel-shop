@@ -2,12 +2,12 @@
 @section('title', 'Главная')
 @section('content')
 
-    <h1>Все товары</h1>
+    <h1>@lang('main.allProducts')</h1>
     <form method="GET" action=" {{ route('index') }}">
         <div class="filters row">
             <div class="col-sm-6 col-md-3">
                 <label for="priceFrom">
-                    Цена от
+                    @lang('main.priceFrom')
                     <input
                         type="text"
                         name="priceFrom"
@@ -16,7 +16,7 @@
                         value="{{ request()->priceFrom }}">
                 </label>
                 <label for="priceTo">
-                    до
+                    @lang('main.to')
                     <input
                         type="text"
                         name="priceTo"
@@ -35,7 +35,7 @@
                             checked
                         @endif
                     >
-                    Хит
+                    @lang('main.properties.hit')
                 </label>
             </div>
             <div class="col-sm-2 col-md-2">
@@ -48,7 +48,7 @@
                             checked
                         @endif
                     >
-                    Новинка
+                    @lang('main.properties.new')
                 </label>
             </div>
             <div class="col-sm-2 col-md-2">
@@ -61,12 +61,12 @@
                             checked
                         @endif
                     >
-                       Рекомендуем
+                    @lang('main.properties.recommend')
                 </label>
             </div>
             <div class="col-sm-6 col-md-3">
-                <button type="submit" class="btn btn-primary">Фильтр</button>
-                <a href="{{ route('index') }}" class="btn btn-warning">Сброс</a>
+                <button type="submit" class="btn btn-primary">@lang('main.filter')</button>
+                <a href="{{ route('index') }}" class="btn btn-warning">@lang('main.reset')</a>
             </div>
         </div>
     </form>
