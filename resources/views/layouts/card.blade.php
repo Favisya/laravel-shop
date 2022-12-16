@@ -17,8 +17,8 @@
         </div>
         <img src="{{ Storage::url($product->image) }}" alt="iPhone X 64GB">
         <div class="caption">
-            <h3>{{ $product->name }}</h3>
-            <p>{{ $product->price }} ₽</p>
+            <h3>{{ $product->__('name') }}</h3>
+            <p>{{ $product->price }} {{ \App\Services\CurrencyOperations::getCurrencySymbol() }}</p>
             <p>
             <form action="{{ route('addToBasket', $product) }}" method="POST">
                 @if($product->isAvailable())

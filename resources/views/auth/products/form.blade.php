@@ -47,6 +47,20 @@
                                value="@isset($product){{ $product->name }}@endisset">
                     </div>
                 </div>
+
+                    <br>
+                    <div class="input-group row">
+                        @include('auth.layouts.error', ['field' => 'code'])
+                        <label for="name_en" class="col-sm-2 col-form-label">Название en: </label>
+                        <div class="col-sm-6">
+
+                            @include('auth.layouts.error', ['field' => 'name_en'])
+
+                            <input type="text" class="form-control" name="name_en" id="name"
+                                   value="@isset($product){{ $product->name_en }}@endisset">
+                        </div>
+                    </div>
+
                 <br>
                 <div class="input-group row">
                     <label for="category_id" class="col-sm-2 col-form-label">Категория: </label>
@@ -75,6 +89,15 @@
                     </div>
                 </div>
                 <br>
+                    <div class="input-group row">
+                        <label for="description_en" class="col-sm-2 col-form-label">Описание en: </label>
+                        @include('auth.layouts.error', ['field' => 'description_en'])
+                        <div class="col-sm-6">
+								<textarea name="description_en" id="description_en" cols="72"
+                                          rows="7">@isset($product){{ $product->description_en }}@endisset</textarea>
+                        </div>
+                    </div>
+                    <br>
                 <div class="input-group row">
                     <label for="image" class="col-sm-2 col-form-label">Картинка: </label>
                     <div class="col-sm-10">

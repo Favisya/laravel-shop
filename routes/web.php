@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\Person\OrderController as PersonOrderController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
@@ -31,6 +32,8 @@ Auth::routes([
 ]);
 
 Route::get('locale/{locale}', [LanguageController::class, 'changeLocale'])->name('locale');
+
+Route::get('currency/{currencyCode}', [CurrencyController::class, 'changeCurrency'])->name('currency');
 
 Route::get('reset', [ResetController::class, 'resetProject'])->name('reset');
 

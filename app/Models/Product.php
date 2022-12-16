@@ -2,25 +2,19 @@
 
 namespace App\Models;
 
+use App\Services\CurrencyOperations;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, Translateable;
 
     protected $fillable = [
-        'id',
-        'code',
-        'name',
-        'image',
-        'price',
-        'description',
-        'category_id',
-        'hit',
-        'new',
-        'recommend',
-        'count',
+        'id', 'code', 'name', 'name_en',
+        'image', 'price', 'description',
+        'description_en', 'category_id', 'hit',
+        'new', 'recommend', 'count',
     ];
 
     public function scopeHit($query)
@@ -86,5 +80,11 @@ class Product extends Model
     public function isRecommend(): bool
     {
         return $this->recommend === 1;
+    }
+
+    public function getPriceAttribute($value)
+    {
+        $originCurrency = Session::getItem('currency') ?? 'RUB';
+        return round(CurrencyOperations::convertCurrency($value, $originCurrency), 2);
     }
 }

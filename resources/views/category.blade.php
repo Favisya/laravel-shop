@@ -2,10 +2,10 @@
 @section('title', $category->name)
 @section('content')
     <h1>
-        {{$category->name}} - товаров: {{$category->products->count()}}
+        {{$category->__('name')}} - товаров: {{$category->products->count()}}
     </h1>
     <p>
-        {{$category->description}}
+        {{$category->__('description')}}
     </p>
     <div class="row">
         @foreach($category->products()->with('category')->get() as $product)
